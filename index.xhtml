@@ -1,0 +1,292 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>JSF Screen Task</title>
+        <style>  
+            .container {  
+                
+               display: flex;  
+               justify-content: center;  
+               align-items: left;  
+               tab-size: none;   
+               
+            }
+
+            .top input{ 
+               
+                padding: 5px 5px 5px 5px; 
+                border:none;
+                color:white;  
+                background-color:slateblue;  
+                cursor: pointer;
+                float: left;
+
+
+            }
+            
+
+            .button1 input{
+                margin: 5px;
+                padding: 12px 12px 12px 12px; 
+                border: none;
+                color:white;  
+                background-color:green;  
+                cursor: pointer;
+                float: right;
+            }
+            .button2 input{
+                margin: 5px;
+                padding: 12px 12px 12px 12px; 
+                border: none;
+                color:white;  
+                background-color:red; 
+                cursor: pointer;
+                float: right;
+            }
+
+        </style>
+
+    </h:head>
+
+    <h:body>
+        
+
+
+        <p:toolbar class="container">
+                                
+
+                <p:toolbarGroup>
+                    <p:commandButton type="button" onclick="PF('rec-new').show()" icon="pi pi-file" style="margin-right:50px;background-color:#f7f9fc;border:none;color:black"></p:commandButton>
+                    <p:dialog widgetVar="rec-new" header="Are you sure want to add new Record?">
+                        <p:button value="Yes"  outcome="#{user.refresh()}"></p:button>
+                    </p:dialog>
+                    <p:commandButton type="button" icon="pi pi-search" style="margin-right:50px;background-color:#f7f9fc;border:none;color:black"></p:commandButton>     
+                    <p:commandButton type="button" action="#{user.save()}" update="message" icon="pi pi-save" style="margin-right:50px;background-color:#f7f9fc;border:none;color:lightgray" >
+                    <p:confirm type="popup" header="Confirmation" message="Do you want to save this record?" icon="pi pi-info-circle"/>
+                    </p:commandButton>
+                    <p:commandButton   actionListener="#{updel.upstart()}" icon="pi pi-user-edit" style="margin-right:50px;background-color:#f7f9fc;border:none;color:black" ></p:commandButton>
+                    <p:commandButton   actionListener="#{updel.deletes()}" icon="pi pi-trash" style="margin-right:50px;background-color:#f7f9fc;border:none;color:black"></p:commandButton>
+                    <p:confirmPopup global="true">
+                       <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+                       <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+                    </p:confirmPopup>
+                    <p:commandButton type="button" icon="pi pi-undo" style="margin-right:50px;background-color:#f7f9fc;border:none;color:gray"></p:commandButton>
+                    <p:commandButton type="button" icon="pi pi-save" style="margin-right:50px;background-color:#f7f9fc;border:none;color:gray"></p:commandButton>
+                    <p:commandButton type="button" icon="pi pi-upload" style="margin-right:50px;background-color:#f7f9fc;border:none;color:black" ></p:commandButton>
+                    <p:commandButton type="button" icon="pi pi-print" style="margin-right:50px;background-color:#f7f9fc;border:none;color:black" ></p:commandButton>
+                    <p:commandButton type="button" icon="pi pi-angle-double-left" style="margin-right:50px;background-color:#f7f9fc;border:none;color:gray"></p:commandButton>
+                    <p:commandButton type="button" icon="pi pi-arrow-circle-left" style="margin-right:50px;background-color:#f7f9fc;border:none;color:gray"></p:commandButton>
+                    <p:commandButton type="button" icon="pi pi-arrow-circle-right" style="margin-right:50px;background-color:#f7f9fc;border:none;color:gray" ></p:commandButton>
+                    <p:commandButton type="button" icon="pi pi-angle-double-right" style="margin-right:50px;background-color:#f7f9fc;border:none;color:gray"></p:commandButton>
+                    <p:commandButton type="button" icon="pi pi-globe" style="margin-right:50px;background-color:#f7f9fc;border:none;color:gray"></p:commandButton>
+                    
+
+
+                    
+                </p:toolbarGroup>
+            </p:toolbar>
+        <br></br>
+        
+
+
+        <h:form> 
+            
+            <div class="top"><h:commandButton value="Add Course Detail" /></div>
+            <br></br>
+            <br></br>
+           
+            <hr></hr>
+            
+            <table>  
+                <tr>     
+                    <td><b><h:outputLabel for="title" style="text-align: right ; padding-left: 100px ;margin-right: 60px">Title</h:outputLabel></b></td>  
+                    <td>
+                        <p:inputText id="title-id" value="#{user.title}" placeholder="Course Title" >
+                        <f:ajax event="keyup" listener="#{user.valid_titlename()}" render="titleerr"></f:ajax></p:inputText>
+                        <h:outputText id="titleerr" value="#{user.titleerror}"  style="color:red"></h:outputText>
+                    </td> 
+                    <td>
+                        <div class="datepicker">
+                            
+                        
+                            <p:calendar id="button" value="#{user.date}"   style="margin-left: 60px" mindate="today">
+                                <p:ajax event="dateSelect" listener="#{user.statusvalidate}" update="status_select"> </p:ajax></p:calendar>
+                        </div>
+                    </td>
+                    
+                </tr>
+            </table>
+          
+            
+            <table>
+                <tr>    
+                    <td><b><h:outputLabel for="description" style="text-align: right;padding-left: 53px;margin-right: 60px">Description</h:outputLabel></b></td>
+                    <td>
+                        <p:inputTextarea id="text-area-id" value="#{user.description}"  placeholder="Enter details..."  cols="125" rows="4">
+                        <f:ajax event="keyup" listener="#{user.valid_description()}" render="descriptionerr"></f:ajax></p:inputTextarea>
+                       
+                        <h:outputText id="descriptionerr" value="#{user.descriptionerror}"  style="color:red"></h:outputText>    
+                    </td>
+                </tr>
+            </table>
+             
+            <table>
+                <tr>
+
+                    <td><b><h:outputLabel for="instructorType" style="text-align: right;padding-left: 62px;margin-right: 50px">Instructor</h:outputLabel></b></td>  
+
+                    <td><h:selectOneRadio  value="#{user.instructor_Type}">  
+                            
+                            <f:selectItem itemValue="Internal"  itemLabel="Internal" />  
+                            <f:selectItem  itemValue="External" itemLabel="External" />  
+                            <p:ajax event="change" listener="#{user.instructor_t()}" update="@form"></p:ajax>
+                        </h:selectOneRadio>
+
+
+                        <td><b><h:outputLabel id="internal_inst" for="instructor" style="text-align: right;padding-left: 50px">Instructor</h:outputLabel></b></td>
+                        <td><p:inputText rendered="#{user.instname}" id="instructor-id" value="#{user.instructor}" style="margin-left: 50px" placeholder="instructor" >
+                            <f:ajax event="keyup" listener="#{user.valid_instructor()}" render="instructorerr"></f:ajax></p:inputText>
+                       
+                            <h:outputText id="instructorerr" value="#{user.instructorerror}"  style="color:red"></h:outputText>
+                            </td>
+                        <td> <p:selectOneMenu style="margin-left:-220px;width:350px" id="external_inst" value="#{user.instructor_name}" rendered="#{user.instlist}">
+                    <f:selectItem itemLabel="Select One" itemValue=""/>
+                    <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                    <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                    <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                   
+                </p:selectOneMenu>
+                       
+                           
+                            </td>
+                    </td>    
+                </tr>
+                <tr>
+                    <td><b><h:outputLabel style="text-align: right;padding-left: 98px;margin-right: 70px">Type</h:outputLabel></b></td>
+                </tr>
+                
+                <tr>
+                    <td><b><h:outputLabel for="duration" style="text-align: right;padding-left: 70px;">Duration</h:outputLabel></b></td>
+                    <td><p:inputText id="duration-id" value="#{user.duration}" style="margin-right: 50px;" >
+                        <f:ajax event="keyup" listener="#{user.validduration()}" render="duration_err" /></p:inputText>
+                       
+                        <h:outputText id="duration_err" value="#{user.duration_error}"  style="color:red"></h:outputText>
+                    
+                    </td>
+
+                    <td><b><h:outputLabel for="total_cost" style="text-align: right;padding-left: 50px" >Total Cost</h:outputLabel></b></td>
+                    <td><p:inputText id="cost-id" value="#{user.total_cost}" style="margin-left: 50px" >
+                            <p:ajax event="keyup" listener="#{user.validcost()}" update="participant-id"/>
+                            
+                        </p:inputText>
+                       
+                        <h:outputText id="total_costerror" value="#{user.total_costerror}"  style="color:red"></h:outputText>
+                    </td>
+                </tr>
+               
+                <tr>     
+                    <td><b><h:outputLabel for="participant" style="text-align: left;padding-left: 105px;"># of</h:outputLabel></b></td>
+                        <td><p:inputText id="no_participant-id" value="#{user.participant}" style="margin-right: 50px;margin-right: 50px" >
+                                <p:ajax event="keyup" listener="#{user.validparticipant()}"   update="participant-id"></p:ajax>
+                                
+                       
+                            </p:inputText>
+                       
+                        <h:outputText id="participant_err" value="#{user.participant_error}"  style="color:red"></h:outputText></td>
+                    
+
+                    <td><b><h:outputLabel for="cost_per_person" style="text-align: right;padding-left: 62px">Cost per</h:outputLabel></b></td>
+                    <td><p:inputText id="participant-id" value="#{user.cost_per_person}" style="margin-left: 50px" ></p:inputText></td>
+                </tr> 
+                 <tr>
+                    <td><b><h:outputLabel style="text-align: right;padding-left: 55px;margin-right: 70px">Participant</h:outputLabel></b></td>
+                    <td><b><h:outputLabel style="text-align: right;padding-left: 55px;margin-right: 70px"></h:outputLabel></b></td>
+                    <td><b><h:outputLabel style="text-align: right;padding-left: 73px;margin-right: 70px">Person</h:outputLabel></b></td>
+                </tr>
+            </table>
+            <table>
+                <tr>     
+                    <td><b><h:outputLabel for="status" style="text-align: right;padding-left: 556px">Status</h:outputLabel></b></td>
+                    <td>
+                        <p:selectOneMenu value = "#{user.status}" style="margin-left: 120px" id="status_select"> 
+                            <f:selectItem itemValue = "1" itemLabel = "Completed" /> 
+                            <f:selectItem itemValue = "2" itemLabel = "Inprogress" /> 
+                            <f:selectItem itemValue = "3" itemLabel = "Planned" />
+                        </p:selectOneMenu> 	
+                    </td>
+                </tr>
+            </table>
+
+            <tr>    
+                <td><div class="button1"><h:commandButton value="Submit" action="#{user.save()}" /><div class="button2"><h:commandButton value="Close" action="index" /></div></div></td>
+            </tr>  
+
+           
+        </h:form>   
+        
+        
+        <br></br>  
+    <br></br>
+    <br></br>
+     <h:form>
+         <p:dataTable resizableColumns="true" value="#{user.list()}" var="l">
+            <p:column>
+                <p:commandButton value="#{l.id}" style="padding: 0;background: none;border:none;color:#000" onclick="PF('del-new').show()">
+                    <p:ajax event="click" listener="#{updel.id_transfer(l.id)}"></p:ajax>
+                </p:commandButton>
+                <p:dialog widgetVar="del-new">
+                    <h:outputFormat value="Are you want to update record?">
+                        <f:param value="#{updel.delreq ? 'delete' : 'update'}"></f:param> 
+                    </h:outputFormat>      
+                    <p:commandButton value="Yes" actionListener="#{updel.delete(l)}" action="#{user.setvalues()}" update="@all"></p:commandButton>
+                </p:dialog>
+            </p:column>
+            <p:column>
+                <f:facet name="header">Title</f:facet>
+                    #{l.title}
+            </p:column>
+            <p:column>
+                <f:facet name="header">date</f:facet>
+                    #{l.date}
+            </p:column>
+            <p:column>
+                <f:facet name="header">description</f:facet>
+                    #{l.description}
+            </p:column>
+            <p:column>
+                <f:facet name="header">instructor_Type</f:facet>
+                    #{l.instructor_Type}
+            </p:column><p:column>
+                <f:facet name="header">instructor</f:facet>
+                    #{l.instructor}
+            </p:column>
+            <p:column>
+                <f:facet name="header">duration</f:facet>
+                    #{l.duration}
+            </p:column>
+            <p:column>
+                <f:facet name="header">total_cost</f:facet>
+                    #{l.total_cost}
+            </p:column>
+            <p:column>
+                <f:facet name="header">participant</f:facet>
+                    #{l.participant}
+            </p:column>
+            <p:column>
+                <f:facet name="header">cost_per_person</f:facet>
+                    #{l.cost_per_person}
+            </p:column>
+            <p:column>
+                <f:facet name="header">status</f:facet>
+                    #{l.status}
+            </p:column>
+            
+        </p:dataTable>
+    </h:form>
+    </h:body>
+</html>
+
